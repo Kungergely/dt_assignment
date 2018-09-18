@@ -1,0 +1,19 @@
+---
+ - name: Apply the prescribed configuration
+   hosts: all
+   become: yes
+   tasks:
+   - name: Install docker.io
+     apt:
+      name: docker.io
+      state: latest
+
+   - name: Docker config template
+     template:
+      src: docker.j2
+      dest: /etc/docker/daemon.json
+
+   - name: Restart docker service after config file change
+     service:
+      name: docker
+      state: restarted
